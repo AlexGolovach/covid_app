@@ -1,5 +1,7 @@
 import 'package:covidapp/blocs/country_bloc.dart';
 import 'package:covidapp/models/country.dart';
+import 'package:covidapp/models/stats_by_country.dart';
+import 'package:covidapp/screens/virus_progress_in_country_screen.dart';
 import 'package:covidapp/ui/chart_data.dart';
 import 'package:covidapp/ui/stats_chart.dart';
 import 'package:covidapp/utils/bloc_state_and_event.dart';
@@ -50,15 +52,15 @@ class _CountryScreenState extends State<CountryScreen> {
             bloc: _bloc,
             // ignore: missing_return
             builder: (BuildContext context, BlocState state) {
-              if (state is CountryLoading) {
+              if (state is DataLoading) {
                 return Center(child: CircularProgressIndicator());
               }
 
-              if (state is CountryLoadSuccess) {
+              if (state is DataLoadSuccess) {
                 return _buildScreen(state.item);
               }
 
-              if (state is CountryLoadError) {
+              if (state is DataLoadError) {
                 return Center(
                     child: Text(state.error,
                         maxLines: 2, textAlign: TextAlign.center));
@@ -70,33 +72,43 @@ class _CountryScreenState extends State<CountryScreen> {
     return SingleChildScrollView(
         padding: EdgeInsets.all(2.0),
         child: Column(children: <Widget>[
-          _buildCardWithStats(data),
-          _buildChartWidget(data)
+          _buildCardWithStats(data.info),
+          _buildChartWidget(data),
+          SizedBox(height: 10.0),
+          RaisedButton(
+              onPressed: () {
+                _navigateToVirusProgressScreen(data.info);
+              },
+              color: Colors.blue,
+              child: Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: Text("See virus progress",
+                      style: TextStyle(color: Colors.white, fontSize: 16.0))))
         ]));
   }
 
-  Widget _buildCardWithStats(CountryData data) {
+  Widget _buildCardWithStats(List<Info> data) {
     return Card(
         elevation: 4.0,
         child: Container(
             child: Column(children: <Widget>[
-              Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Text("Actual stat",
-                          style: TextStyle(
-                              fontSize: 24.0, fontWeight: FontWeight.bold)))),
-              Padding(
-                  padding: EdgeInsets.all(3.0),
-                  child: Text("Confirmed people: ${data.info.last.confirmed}")),
-              Padding(
-                  padding: EdgeInsets.all(3.0),
-                  child: Text("Recovered people: ${data.info.last.recovered}")),
-              Padding(
-                  padding: EdgeInsets.all(3.0),
-                  child: Text("Deaths: ${data.info.last.deaths}"))
-            ])));
+          Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Align(
+                  alignment: Alignment.center,
+                  child: Text("Actual stat",
+                      style: TextStyle(
+                          fontSize: 24.0, fontWeight: FontWeight.bold)))),
+          Padding(
+              padding: EdgeInsets.all(3.0),
+              child: Text("Confirmed people: ${data.last.confirmed}")),
+          Padding(
+              padding: EdgeInsets.all(3.0),
+              child: Text("Recovered people: ${data.last.recovered}")),
+          Padding(
+              padding: EdgeInsets.all(3.0),
+              child: Text("Deaths: ${data.last.deaths}"))
+        ])));
   }
 
   Widget _buildChartWidget(CountryData countryData) {
@@ -115,6 +127,13 @@ class _CountryScreenState extends State<CountryScreen> {
           barColor: charts.ColorUtil.fromDartColor(Colors.brown))
     ];
 
-    return StatsChart(data: data, title: "${countryData.country} stats");
+    return StatsChart(data: data, title: "${countryData.country} stat");
+  }
+
+  _navigateToVirusProgressScreen(List<Info> data) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => VirusProgressInCountryScreen(list: data)));
   }
 }

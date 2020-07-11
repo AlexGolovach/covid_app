@@ -6,21 +6,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoadData extends BlocEvent {}
 
-class HomeLoading extends BlocState {}
+class DataLoading extends BlocState {}
 
-class HomeLoadSuccess extends BlocState {
+class DataLoadSuccess extends BlocState {
   final Global item;
 
-  HomeLoadSuccess({this.item});
+  DataLoadSuccess({this.item});
 
   @override
   List<Object> get props => [item];
 }
 
-class HomeLoadError extends BlocState {
+class DataLoadError extends BlocState {
   final String error;
 
-  HomeLoadError({this.error});
+  DataLoadError({this.error});
 
   @override
   List<Object> get props => [error];
@@ -29,7 +29,7 @@ class HomeLoadError extends BlocState {
 class HomeBloc extends Bloc<BlocEvent, BlocState> {
   final _repository = HomeRepository();
 
-  HomeBloc() : super(HomeLoading());
+  HomeBloc() : super(DataLoading());
 
   @override
   Stream<BlocState> mapEventToState(BlocEvent event) async* {
@@ -37,9 +37,9 @@ class HomeBloc extends Bloc<BlocEvent, BlocState> {
       Result result = await _repository.loadTotalStats();
 
       if (result is Success) {
-        yield HomeLoadSuccess(item: result.value);
+        yield DataLoadSuccess(item: result.value);
       } else if (result is Error) {
-        yield HomeLoadError(error: result.error);
+        yield DataLoadError(error: result.error);
       }
     }
   }

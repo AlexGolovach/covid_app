@@ -29,15 +29,15 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
             bloc: _bloc,
             // ignore: missing_return
             builder: (BuildContext context, BlocState state) {
-              if (state is CountriesListLoading) {
+              if (state is DataLoading) {
                 return Center(child: CircularProgressIndicator());
               }
 
-              if (state is CountriesListLoadSuccess) {
+              if (state is DataLoadSuccess) {
                 return _buildSearchBar(state.items);
               }
 
-              if (state is CountriesListLoadError) {
+              if (state is DataLoadError) {
                 return Center(child: Text(state.error));
               }
             }));

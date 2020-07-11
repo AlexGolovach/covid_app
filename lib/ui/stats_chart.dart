@@ -17,7 +17,7 @@ class _StatsChartState extends State<StatsChart> {
   Widget build(BuildContext context) {
     final List<charts.Series<ChartData, String>> series = [
       charts.Series(
-          id: "Stats",
+          id: "Stat",
           data: widget.data,
           fillPatternFn: (_, __) => charts.FillPatternType.solid,
           domainFn: (ChartData chartData, _) => chartData.name,
@@ -31,6 +31,8 @@ class _StatsChartState extends State<StatsChart> {
             elevation: 4.0,
             child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
               Text(widget.title,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
                   style:
                       TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold)),
               Flexible(

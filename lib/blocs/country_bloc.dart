@@ -12,21 +12,21 @@ class LoadData extends BlocEvent {
   LoadData({this.country});
 }
 
-class CountryLoading extends BlocState {}
+class DataLoading extends BlocState {}
 
-class CountryLoadSuccess extends BlocState {
+class DataLoadSuccess extends BlocState {
   final CountryData item;
 
-  CountryLoadSuccess({this.item});
+  DataLoadSuccess({this.item});
 
   @override
   List<Object> get props => [item];
 }
 
-class CountryLoadError extends BlocState {
+class DataLoadError extends BlocState {
   final String error;
 
-  CountryLoadError({this.error});
+  DataLoadError({this.error});
 
   @override
   List<Object> get props => [error];
@@ -43,7 +43,7 @@ class CountryBloc extends Bloc<BlocEvent, BlocState> {
   final _repository = CountryRepository();
   final Geolocator _geolocator = Geolocator()..forceAndroidLocationManager;
 
-  CountryBloc() : super(CountryLoading());
+  CountryBloc() : super(DataLoading());
 
   @override
   Stream<BlocState> mapEventToState(BlocEvent event) async* {
@@ -81,10 +81,10 @@ class CountryBloc extends Bloc<BlocEvent, BlocState> {
     }
 
     if (result is Success) {
-      yield CountryLoadSuccess(
+      yield DataLoadSuccess(
           item: CountryData(info: result.value, country: country));
     } else if (result is Error) {
-      yield CountryLoadError(error: result.error);
+      yield DataLoadError(error: result.error);
     }
   }
 }

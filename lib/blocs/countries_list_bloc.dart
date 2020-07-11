@@ -15,21 +15,21 @@ class SearchEvent extends BlocEvent {
   List<Object> get props => [text];
 }
 
-class CountriesListLoading extends BlocState {}
+class DataLoading extends BlocState {}
 
-class CountriesListLoadSuccess extends BlocState {
+class DataLoadSuccess extends BlocState {
   final List<CountryInfo> items;
 
-  CountriesListLoadSuccess({this.items});
+  DataLoadSuccess({this.items});
 
   @override
   List<Object> get props => items;
 }
 
-class CountriesListLoadError extends BlocState {
+class DataLoadError extends BlocState {
   final String error;
 
-  CountriesListLoadError({this.error});
+  DataLoadError({this.error});
 
   @override
   List<Object> get props => [error];
@@ -40,7 +40,7 @@ class CountriesListBloc extends Bloc<BlocEvent, BlocState> {
 
   List<CountryInfo> countriesList;
 
-  CountriesListBloc() : super(CountriesListLoading());
+  CountriesListBloc() : super(DataLoading());
 
   @override
   Stream<BlocState> mapEventToState(BlocEvent event) async* {
@@ -57,15 +57,15 @@ class CountriesListBloc extends Bloc<BlocEvent, BlocState> {
     if (result is Success) {
       countriesList = result.value;
 
-      yield CountriesListLoadSuccess(items: result.value);
+      yield DataLoadSuccess(items: result.value);
     } else if (result is Error) {
-      yield CountriesListLoadError(error: result.error);
+      yield DataLoadError(error: result.error);
     }
   }
 
   Stream<BlocState> _processSearchEvent(String text) async* {
     if (text.isEmpty) {
-      yield CountriesListLoadSuccess(items: countriesList);
+      yield DataLoadSuccess(items: countriesList);
     }
 
     final list = List<CountryInfo>();
@@ -77,7 +77,7 @@ class CountriesListBloc extends Bloc<BlocEvent, BlocState> {
     });
 
     if (list.isNotEmpty) {
-      yield CountriesListLoadSuccess(items: list);
+      yield DataLoadSuccess(items: list);
     }
   }
 }

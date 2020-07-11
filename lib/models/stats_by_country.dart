@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'stats_by_country.g.dart';
@@ -55,4 +56,11 @@ class Info {
       this.date});
 
   factory Info.fromJson(Map<String, dynamic> json) => _$InfoFromJson(json);
+
+  String getDate() {
+    DateFormat _dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ssZ");
+    DateTime dateTime = _dateFormat.parse(date);
+
+    return "${dateTime.day}.${dateTime.month}.${dateTime.year}";
+  }
 }

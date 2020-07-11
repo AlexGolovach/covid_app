@@ -35,15 +35,15 @@ class _HomeScreenState extends State<HomeScreen> {
           bloc: _bloc,
           // ignore: missing_return
           builder: (BuildContext context, BlocState state) {
-            if (state is HomeLoading) {
+            if (state is DataLoading) {
               return Center(child: CircularProgressIndicator());
             }
 
-            if (state is HomeLoadSuccess) {
+            if (state is DataLoadSuccess) {
               return _buildScreen(state.item);
             }
 
-            if (state is HomeLoadError) {
+            if (state is DataLoadError) {
               return Center(child: Text(state.error));
             }
           },
@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
           barColor: charts.ColorUtil.fromDartColor(Colors.green))
     ];
 
-    return StatsChart(data: data, title: "World stats");
+    return StatsChart(data: data, title: "World stat");
   }
 
   _navigateToCountryScreen() {
