@@ -1,6 +1,7 @@
 # covidapp
 
-A new Flutter application.
+<img src="https://github.com/AlexGolovach/covid_app/blob/master/screenshots/App-image.gif" width="200" height="400" />
+<img src="https://github.com/AlexGolovach/covid_app/blob/master/screenshots/Location-image.gif" width="200" height="400" />
 
 ## Getting Started
 
