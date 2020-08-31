@@ -1,3 +1,4 @@
+import 'package:covidapp/base_screen_state.dart';
 import 'package:covidapp/blocs/virus_progress_in_country_bloc.dart';
 import 'package:covidapp/models/stats_by_country.dart';
 import 'package:covidapp/utils/bloc_state_and_event.dart';
@@ -13,16 +14,13 @@ class VirusProgressInCountryScreen extends StatefulWidget {
   createState() => _VirusProgressInCountryScreenState();
 }
 
-class _VirusProgressInCountryScreenState
-    extends State<VirusProgressInCountryScreen> {
-  VirusProgressInCountryBloc _bloc;
-
+class _VirusProgressInCountryScreenState extends BaseScreenState<
+    VirusProgressInCountryBloc, VirusProgressInCountryScreen> {
   @override
   void initState() {
     super.initState();
 
-    _bloc = VirusProgressInCountryBloc();
-    _bloc.add(FilterData(list: widget.list));
+    bloc.add(FilterData(list: widget.list));
   }
 
   @override
@@ -30,7 +28,7 @@ class _VirusProgressInCountryScreenState
     return Scaffold(
       appBar: AppBar(title: Text("Virus progress")),
       body: BlocBuilder(
-          bloc: _bloc,
+          bloc: bloc,
           // ignore: missing_return
           builder: (BuildContext context, BlocState state) {
             if (state is DataLoading) {

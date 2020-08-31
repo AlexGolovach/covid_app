@@ -1,3 +1,4 @@
+import 'package:covidapp/base_screen_state.dart';
 import 'package:covidapp/blocs/countries_list_bloc.dart';
 import 'package:covidapp/models/country.dart';
 import 'package:covidapp/screens/country_screen.dart';
@@ -11,22 +12,20 @@ class CountriesListScreen extends StatefulWidget {
   createState() => _CountriesListScreenState();
 }
 
-class _CountriesListScreenState extends State<CountriesListScreen> {
-  CountriesListBloc _bloc;
-
+class _CountriesListScreenState
+    extends BaseScreenState<CountriesListBloc, CountriesListScreen> {
   @override
   void initState() {
     super.initState();
 
-    _bloc = CountriesListBloc();
-    _bloc.add(LoadCountriesListEvent());
+    bloc.add(LoadCountriesListEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: BlocBuilder<CountriesListBloc, BlocState>(
-            bloc: _bloc,
+            bloc: bloc,
             // ignore: missing_return
             builder: (BuildContext context, BlocState state) {
               if (state is DataLoading) {
@@ -61,7 +60,7 @@ class _CountriesListScreenState extends State<CountriesListScreen> {
                     title: Text(_item.country))));
       },
       onChanged: (String value) {
-        _bloc.add(SearchEvent(text: value));
+        bloc.add(SearchEvent(text: value));
       },
       decoration: InputDecoration.collapsed(hintText: "Search..."),
     );

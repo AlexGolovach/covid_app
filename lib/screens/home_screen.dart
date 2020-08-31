@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:covidapp/base_screen_state.dart';
 import 'package:covidapp/blocs/home_bloc.dart';
 import 'package:covidapp/models/total_state.dart';
 import 'package:covidapp/screens/countries_list_screen.dart';
@@ -15,15 +16,12 @@ class HomeScreen extends StatefulWidget {
   createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  HomeBloc _bloc;
-
+class _HomeScreenState extends BaseScreenState<HomeBloc, HomeScreen> {
   @override
   void initState() {
     super.initState();
 
-    _bloc = HomeBloc();
-    _bloc.add(LoadData());
+    bloc.add(LoadData());
   }
 
   @override
@@ -32,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(title: Text("Home")),
         floatingActionButton: _buildFabBtn(),
         body: BlocBuilder<HomeBloc, BlocState>(
-          bloc: _bloc,
+          bloc: bloc,
           // ignore: missing_return
           builder: (BuildContext context, BlocState state) {
             if (state is DataLoading) {

@@ -1,3 +1,4 @@
+import 'package:covidapp/base_screen_state.dart';
 import 'package:covidapp/blocs/country_bloc.dart';
 import 'package:covidapp/models/country.dart';
 import 'package:covidapp/models/stats_by_country.dart';
@@ -19,20 +20,16 @@ class CountryScreen extends StatefulWidget {
   createState() => _CountryScreenState();
 }
 
-class _CountryScreenState extends State<CountryScreen> {
-  CountryBloc _bloc;
-
+class _CountryScreenState extends BaseScreenState<CountryBloc, CountryScreen> {
   @override
   void initState() {
     super.initState();
 
-    _bloc = CountryBloc();
-
     if (widget.country == null) {
       _checkGps();
-      _bloc.add(LoadData());
+      bloc.add(LoadData());
     } else {
-      _bloc.add(LoadData(country: widget.country));
+      bloc.add(LoadData(country: widget.country));
     }
   }
 
@@ -49,7 +46,7 @@ class _CountryScreenState extends State<CountryScreen> {
     return Scaffold(
         appBar: AppBar(title: Text("Country")),
         body: BlocBuilder<CountryBloc, BlocState>(
-            bloc: _bloc,
+            bloc: bloc,
             // ignore: missing_return
             builder: (BuildContext context, BlocState state) {
               if (state is DataLoading) {
